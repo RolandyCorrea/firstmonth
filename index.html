@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Nuestras Fotos</title>
+
+<style>
+  body{
+    margin:0;
+    padding:20px;
+    text-align:center;
+    background:#7ed9f5;
+    font-family:"Poppins", sans-serif;
+    overflow-x:hidden;
+  }
+
+  h1{
+    color:#299ce9;
+    font-size:32px;
+    margin-bottom:10px;
+  }
+
+  p{
+    color:#7a4a63;
+    margin-bottom:20px;
+    font-size:16px;
+  }
+
+  /* ---------- BLOQUE DEL CARRUSEL ---------- */
+  .carousel-block{
+    background:white;
+    width:340px;
+    height:380px;      /* 🔥 Más alto para que NADA se salga */
+    padding:20px;
+    border-radius:20px;
+    overflow:hidden;   /* 🔥 Evita que sobresalgan las imágenes */
+    box-shadow:0 6px 15px rgba(0,0,0,0.15);
+    margin: 0 auto;
+    margin-top:30px;
+  }
+
+  .carousel-container{
+    width: 270px;
+    height: 270px;
+    margin: auto;
+    perspective: 1100px;
+  }
+
+  /* Giro MUY suave */
+  .carousel{
+    width:100%;
+    height:100%;
+    position:relative;
+    transform-style:preserve-3d;
+    animation: spin 18s linear infinite; /* 🔥 Movimiento más realista */
+  }
+
+  @keyframes spin{
+    from { transform: rotateY(0deg); }
+    to   { transform: rotateY(360deg); }
+  }
+
+  .carousel.paused{
+    animation-play-state: paused;
+  }
+
+  /* Ítems */
+  .carousel-item{
+    width: 350px;
+    height: 350px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-style: preserve-3d;
+  }
+
+  .carousel-item img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:18px;
+    pointer-events:none;
+    transition: transform 0.3s ease;
+    box-shadow:0 4px 12px rgba(0,0,0,0.18);
+  }
+
+  /* Posiciones */
+  .item1{ transform: rotateY(0deg)   translateZ(170px) translate(-50%, -50%); }
+  .item2{ transform: rotateY(90deg)  translateZ(170px) translate(-50%, -50%); }
+  .item3{ transform: rotateY(180deg) translateZ(170px) translate(-50%, -50%); }
+  .item4{ transform: rotateY(270deg) translateZ(170px) translate(-50%, -50%); }
+
+  /* Efecto al tocar */
+  .active{
+    transform: scale(1.12) !important;
+  }
+
+  /* -------- SECCIONES EXTRAS -------- */
+  .section-title{
+    margin-top:50px;
+    color:#144b7e;
+    font-size:26px;
+    font-weight:600;
+  }
+
+  .photo-box{
+    width:380px;
+    margin:40px auto;
+    padding:12px;
+    border-radius:15px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+    background:white;
+  }
+
+.photo-box img{
+    width:100%;
+    height:auto;
+    object-fit:contain;
+    border-radius:0;  /* o 15px si quieres bonito */
+    display:block;
+    margin:auto;
+}
+
+
+  .text-box{
+    width:300px;
+    margin:20px auto;
+    padding:15px;
+    background:white;
+    border-radius:15px;
+    min-height:120px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+    text-align:left;
+    white-space:pre-wrap;
+  }
+
+  /* Corazones */
+  .heart{
+    position:fixed;
+    color:#ff7cae;
+    font-size:22px;
+    animation: float 5s linear infinite;
+    opacity:0.7;
+  }
+
+  @keyframes float{
+    0%{ transform:translateY(0); opacity:1; }
+    100%{ transform:translateY(-140vh); opacity:0; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Momentos Contigo 💖</h1>
+<p>Porque cada foto cuenta una historia de nosotros…</p>
+
+<!-- ---------- BLOQUE DEL CARRUSEL ---------- -->
+<div class="carousel-block">
+  <div class="carousel-container">
+    <div class="carousel" id="carousel">
+
+      <div class="carousel-item item1"><img src="foto1.jpeg"></div>
+      <div class="carousel-item item2"><img src="foto2.jpeg"></div>
+      <div class="carousel-item item3"><img src="foto3.jpeg"></div>
+      <div class="carousel-item item4"><img src="foto4.jpeg"></div>
+
+    </div>
+  </div>
+</div>
+
+<p id="loveMessage" style="
+  font-size:18px;
+  color:#e7357a;
+  margin-top:15px;
+  min-height:25px;
+  font-weight:600;
+"></p>
+
+<h2 class="section-title">Nuestro tiempo juntos 💞</h2>
+<div class="photo-box">
+  <img src="gorila.jpeg">
+</div>
+
+<h3 style="color:#7a4a63; margin-top:-10px;">Nuestro primer mes ❤️</h3>
+
+<h2 class="section-title">Carta de mi corazón ✍️</h2>
+<div class="text-box">
+Aquí puedes escribir tu carta...  
+Cambia este texto por algo bonito para ella.
+</div>
+
+<script>
+/* Corazones */
+function createHeart(){
+  const h = document.createElement("div");
+  h.classList.add("heart");
+  h.style.left = Math.random()*100+"vw";
+  h.style.bottom = "-20px";
+  h.textContent = "❤";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),5000);
+}
+setInterval(createHeart, 700);
+
+/* ---------- CONTROL DEL GIRO ---------- */
+let carousel = document.getElementById("carousel");
+let angle = 0;
+let dragging = false;
+let startX = 0;
+
+carousel.addEventListener("touchstart", (e)=>{
+  dragging = true;
+  startX = e.touches[0].clientX;
+
+  /* Detener giro */
+  carousel.style.animation = "none";
+});
+
+carousel.addEventListener("touchmove", (e)=>{
+  if(!dragging) return;
+  let dx = e.touches[0].clientX - startX;
+  angle += dx * 0.6;           /* 🔥 Más rápido al mover el dedo */
+  startX = e.touches[0].clientX;
+  carousel.style.transform = `rotateY(${angle}deg)`;
+});
+
+carousel.addEventListener("touchend", ()=>{
+  dragging = false;
+
+  /* Reiniciar la animación automática */
+  setTimeout(()=>{
+    carousel.style.animation = "spin 18s linear infinite";
+  }, 150);
+});
+
+/* Mensaje romántico */
+const loveMessage = document.getElementById("loveMessage");
+
+document.querySelectorAll(".carousel-item img").forEach(img => {
+  img.addEventListener("touchstart", () => {
+
+    document.querySelectorAll(".carousel-item img")
+      .forEach(i => i.classList.remove("active"));
+
+    img.classList.add("active");
+
+    loveMessage.textContent = "Me encanta esta foto contigo ❤️";
+  });
+});
+</script>
+
+</body>
+</html>
