@@ -2,7 +2,6 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nuestras Fotos</title>
 
 <style>
@@ -13,11 +12,6 @@
     background:#7ed9f5;
     font-family:"Poppins", sans-serif;
     overflow-x:hidden;
-  }
-
-  .wrap {
-    max-width: 450px;
-    margin: auto;
   }
 
   h1{
@@ -32,22 +26,33 @@
     font-size:16px;
   }
 
-  /* CONTENEDOR 3D (RESPONSIVE) */
-  .carousel-container{
-    width: 280px;
-    height: 280px;
+  /* ---------- BLOQUE DEL CARRUSEL ---------- */
+  .carousel-block{
+    background:white;
+    width:340px;
+    height:380px;      /* 🔥 Más alto para que NADA se salga */
+    padding:20px;
+    border-radius:20px;
+    overflow:hidden;   /* 🔥 Evita que sobresalgan las imágenes */
+    box-shadow:0 6px 15px rgba(0,0,0,0.15);
     margin: 0 auto;
-    perspective: 1200px;
-    margin-top: 40px;
+    margin-top:30px;
   }
 
-  /* CARRUSEL */
+  .carousel-container{
+    width: 270px;
+    height: 270px;
+    margin: auto;
+    perspective: 1100px;
+  }
+
+  /* Giro MUY suave */
   .carousel{
     width:100%;
     height:100%;
     position:relative;
     transform-style:preserve-3d;
-    animation: spin 12s linear infinite;
+    animation: spin 18s linear infinite; /* 🔥 Movimiento más realista */
   }
 
   @keyframes spin{
@@ -55,58 +60,81 @@
     to   { transform: rotateY(360deg); }
   }
 
-  /* ÍTEMS */
+  .carousel.paused{
+    animation-play-state: paused;
+  }
+
+  /* Ítems */
   .carousel-item{
-    width: 280px;
-    height: 280px;
+    width: 350px;
+    height: 350px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform-style: preserve-3d;
-    transform-origin: center center;
   }
 
   .carousel-item img{
     width:100%;
     height:100%;
     object-fit:cover;
+    border-radius:18px;
+    pointer-events:none;
+    transition: transform 0.3s ease;
+    box-shadow:0 4px 12px rgba(0,0,0,0.18);
+  }
+
+  /* Posiciones */
+  .item1{ transform: rotateY(0deg)   translateZ(170px) translate(-50%, -50%); }
+  .item2{ transform: rotateY(90deg)  translateZ(170px) translate(-50%, -50%); }
+  .item3{ transform: rotateY(180deg) translateZ(170px) translate(-50%, -50%); }
+  .item4{ transform: rotateY(270deg) translateZ(170px) translate(-50%, -50%); }
+
+  /* Efecto al tocar */
+  .active{
+    transform: scale(1.12) !important;
+  }
+
+  /* -------- SECCIONES EXTRAS -------- */
+  .section-title{
+    margin-top:50px;
+    color:#144b7e;
+    font-size:26px;
+    font-weight:600;
+  }
+
+  .photo-box{
+    width:380px;
+    margin:40px auto;
+    padding:12px;
     border-radius:15px;
-    box-shadow:0 6px 15px rgba(0,0,0,0.15);
-    cursor:pointer;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+    background:white;
   }
 
-  /* DISTANCIA DEL CÍRCULO */
-  .item1{ transform: rotateY(0deg)   translateZ(200px) translate(-50%, -50%); }
-  .item2{ transform: rotateY(90deg)  translateZ(200px) translate(-50%, -50%); }
-  .item3{ transform: rotateY(180deg) translateZ(200px) translate(-50%, -50%); }
-  .item4{ transform: rotateY(270deg) translateZ(200px) translate(-50%, -50%); }
+.photo-box img{
+    width:100%;
+    height:auto;
+    object-fit:contain;
+    border-radius:0;  /* o 15px si quieres bonito */
+    display:block;
+    margin:auto;
+}
 
-  /* ZOOM */
-  #zoomView{
-    display:none;
-    position:fixed;
-    inset:0;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(4px);
-    align-items:center;
-    justify-content:center;
-    z-index:100;
-  }
 
-  #zoomView img{
-    max-width:90%;
-    max-height:90%;
+  .text-box{
+    width:300px;
+    margin:20px auto;
+    padding:15px;
+    background:white;
     border-radius:15px;
-    animation: zoomIn 0.4s ease;
-    box-shadow:0 0 25px rgba(255,255,255,0.4);
+    min-height:120px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+    text-align:left;
+    white-space:pre-wrap;
   }
 
-  @keyframes zoomIn{
-    from{ transform: scale(0.4); opacity:0; }
-    to{ transform: scale(1); opacity:1; }
-  }
-
-  /* CORAZONES */
+  /* Corazones */
   .heart{
     position:fixed;
     color:#ff7cae;
@@ -120,113 +148,170 @@
     100%{ transform:translateY(-140vh); opacity:0; }
   }
 
-  /* NUEVAS SECCIONES */
-  .section-title{
-    margin-top:50px;
-    color:#144b7e;
-    font-size:26px;
-    font-weight:600;
-  }
+  /* CARTA INTERACTIVA */
+.letter-box{
+  width:460px;
+  margin:40px auto;
+  cursor:pointer;
+}
 
-  .photo-box{
-    width:260px;
-    margin:40px auto;
-    padding:12px;
-    border-radius:15px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.15);
-    background:white;
-  }
+.letter-closed, .letter-open{
+  width:100%;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
 
-  .photo-box img{
-    width:230px;
-    height:230px;
-    object-fit:cover;
-    border-radius:50%;
-    margin:auto;
-    display:block;
-    box-shadow:0 4px 12px rgba(0,0,0,0.15);
-  }
+.letter-open{
+  display:none;
+  transform: scale(0.9);
+}
 
-  .text-box{
-    width:300px;
-    margin:20px auto;
-    padding:15px;
-    background:white;
-    border-radius:15px;
-    min-height:140px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.15);
-    text-align:left;
-    white-space:pre-wrap;
-    font-size:15px;
-    color:#444;
-  }
+.letter-open.show{
+  display:block;
+  opacity:1;
+  transform: scale(1);
+}
+
+.hidden-image{
+  display:none;
+  margin-top:15px;
+  width:250px;
+  border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.15);
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn{
+  from{ opacity:0; transform: scale(0.9); }
+  to{ opacity:1; transform: scale(1); }
+}
+
 </style>
-
 </head>
 <body>
-<div class="wrap">
 
-<h1>Momentos Contigo 💖</h1>
+<h1>Nuestra primera aventura 💖</h1>
 <p>Porque cada foto cuenta una historia de nosotros…</p>
 
-<!-- CARRUSEL -->
-<div class="carousel-container">
-  <div class="carousel">
-    <div class="carousel-item item1"><img src="foto1.jpeg"></div>
-    <div class="carousel-item item2"><img src="foto2.jpeg"></div>
-    <div class="carousel-item item3"><img src="foto3.jpeg"></div>
-    <div class="carousel-item item4"><img src="foto4.jpeg"></div>
+<!-- ---------- BLOQUE DEL CARRUSEL ---------- -->
+<div class="carousel-block">
+  <div class="carousel-container">
+    <div class="carousel" id="carousel">
+
+      <div class="carousel-item item1"><img src="foto1.jpeg"></div>
+      <div class="carousel-item item2"><img src="foto2.jpeg"></div>
+      <div class="carousel-item item3"><img src="foto3.jpeg"></div>
+      <div class="carousel-item item4"><img src="foto4.jpeg"></div>
+
+    </div>
   </div>
 </div>
 
-<!-- ZOOM -->
-<div id="zoomView" onclick="closeZoom()">
-  <img id="zoomImg" src="">
-</div>
+<p id="loveMessage" style="
+  font-size:18px;
+  color:#e7357a;
+  margin-top:15px;
+  min-height:25px;
+  font-weight:600;
+"></p>
 
-<!-- SECCIÓN 1 -->
-<h2 class="section-title">Nuestro tiempo juntos 💞</h2>
+<h2 class="section-title">La Favorita con MichoChabelovers 💞</h2>
 <div class="photo-box">
-  <img src="gorila.png" alt="Nuestro tiempo juntos">
+  <img src="gorila.jpeg">
 </div>
 
-<h3 style="color:#7a4a63; margin-top:-10px;">Nuestro primer mes ❤️</h3>
+<h3 style="color:#7a4a63; margin-top:-10px;">FIRSTMONTH ❤️</h3>
 
-<!-- SECCIÓN 2 -->
-<h2 class="section-title">Carta de mi corazón ✍️</h2>
-<div class="text-box">
-Aquí puedes escribir tu carta...  
-Cambia este texto por algo bonito para ella.
+<h2 class="section-title">Nuestra cartita especial ✉️</h2>
+
+<div class="letter-box" onclick="openLetter()">
+  
+  <!-- Carta cerrada -->
+  <img src="carta.png" class="letter-closed" id="letterClosed">
+
+  <!-- Carta abierta -->
+  <img src="carta1.png" class="letter-open" id="letterOpen">
+
+
 </div>
 
-</div>
 
 <script>
+/* Corazones */
 function createHeart(){
   const h = document.createElement("div");
   h.classList.add("heart");
   h.style.left = Math.random()*100+"vw";
   h.style.bottom = "-20px";
-  h.style.fontSize = (20 + Math.random()*15) + "px";
   h.textContent = "❤";
   document.body.appendChild(h);
   setTimeout(()=>h.remove(),5000);
 }
 setInterval(createHeart, 700);
 
-/* ZOOM */
-function zoom(src){
-  document.getElementById("zoomImg").src = src;
-  document.getElementById("zoomView").style.display = "flex";
-}
-function closeZoom(){
-  document.getElementById("zoomView").style.display = "none";
-}
-document.querySelectorAll(".carousel-item img").forEach(img=>{
-  img.onclick = ()=> zoom(img.src);
+/* ---------- CONTROL DEL GIRO ---------- */
+let carousel = document.getElementById("carousel");
+let angle = 0;
+let dragging = false;
+let startX = 0;
+
+carousel.addEventListener("touchstart", (e)=>{
+  dragging = true;
+  startX = e.touches[0].clientX;
+
+  /* Detener giro */
+  carousel.style.animation = "none";
 });
+
+carousel.addEventListener("touchmove", (e)=>{
+  if(!dragging) return;
+  let dx = e.touches[0].clientX - startX;
+  angle += dx * 0.6;           /* 🔥 Más rápido al mover el dedo */
+  startX = e.touches[0].clientX;
+  carousel.style.transform = `rotateY(${angle}deg)`;
+});
+
+carousel.addEventListener("touchend", ()=>{
+  dragging = false;
+
+  /* Reiniciar la animación automática */
+  setTimeout(()=>{
+    carousel.style.animation = "spin 18s linear infinite";
+  }, 150);
+});
+
+/* Mensaje romántico */
+const loveMessage = document.getElementById("loveMessage");
+
+document.querySelectorAll(".carousel-item img").forEach(img => {
+  img.addEventListener("touchstart", () => {
+
+    document.querySelectorAll(".carousel-item img")
+      .forEach(i => i.classList.remove("active"));
+
+    img.classList.add("active");
+
+    loveMessage.textContent = "Me encanta esta foto contigo ❤️";
+  });
+});
+
+/* CARTA INTERACTIVA */
+function openLetter(){
+  let closed = document.getElementById("letterClosed");
+  let open = document.getElementById("letterOpen");
+  let img = document.getElementById("innerImage");
+
+  closed.style.display = "none";     // Oculta la carta cerrada
+  open.style.display = "block";      // Muestra la carta abierta
+  open.classList.add("show");
+
+  setTimeout(()=>{
+    img.style.display = "block";     // Aparece la imagen interior
+  }, 300); 
+}
+
 </script>
 
 </body>
 </html>
+
 
