@@ -1,252 +1,317 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Nuestras Fotos</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nuestra Fecha</title>
 
 <style>
-  body{
+  :root{
+    --bg: #dff5ff; /* celeste bebé */
+    --panel: #ffffff;
+    --accent: #ff7cae;
+    --accent-dark: #d74f84;
+    --text: #5a4a55;
+    --roller-bg: #fff4fa;
+    --steel-light: #d9d9d9;
+    --steel-dark: #9b9b9b;
+  }
+
+  html,body{
+    height:100%;
     margin:0;
-    padding:20px;
-    text-align:center;
-    background:#7ed9f5;
-    font-family:"Poppins", sans-serif;
-    overflow-x:hidden;
+    background: var(--bg);
+    font-family: "Poppins", sans-serif;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
   }
 
   h1{
-    color:#299ce9;
-    font-size:32px;
-    margin-bottom:10px;
-  }
-
-  p{
-    color:#7a4a63;
     margin-bottom:20px;
-    font-size:16px;
-  }
-
-  /* ---------- BLOQUE DEL CARRUSEL ---------- */
-  .carousel-block{
-    background:white;
-    width:340px;
-    height:380px;      /* 🔥 Más alto para que NADA se salga */
-    padding:20px;
-    border-radius:20px;
-    overflow:hidden;   /* 🔥 Evita que sobresalgan las imágenes */
-    box-shadow:0 6px 15px rgba(0,0,0,0.15);
-    margin: 0 auto;
-    margin-top:30px;
-  }
-
-  .carousel-container{
-    width: 270px;
-    height: 270px;
-    margin: auto;
-    perspective: 1100px;
-  }
-
-  /* Giro MUY suave */
-  .carousel{
-    width:100%;
-    height:100%;
-    position:relative;
-    transform-style:preserve-3d;
-    animation: spin 18s linear infinite; /* 🔥 Movimiento más realista */
-  }
-
-  @keyframes spin{
-    from { transform: rotateY(0deg); }
-    to   { transform: rotateY(360deg); }
-  }
-
-  .carousel.paused{
-    animation-play-state: paused;
-  }
-
-  /* Ítems */
-  .carousel-item{
-    width: 350px;
-    height: 350px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform-style: preserve-3d;
-  }
-
-  .carousel-item img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    border-radius:18px;
-    pointer-events:none;
-    transition: transform 0.3s ease;
-    box-shadow:0 4px 12px rgba(0,0,0,0.18);
-  }
-
-  /* Posiciones */
-  .item1{ transform: rotateY(0deg)   translateZ(170px) translate(-50%, -50%); }
-  .item2{ transform: rotateY(90deg)  translateZ(170px) translate(-50%, -50%); }
-  .item3{ transform: rotateY(180deg) translateZ(170px) translate(-50%, -50%); }
-  .item4{ transform: rotateY(270deg) translateZ(170px) translate(-50%, -50%); }
-
-  /* Efecto al tocar */
-  .active{
-    transform: scale(1.12) !important;
-  }
-
-  /* -------- SECCIONES EXTRAS -------- */
-  .section-title{
-    margin-top:50px;
-    color:#144b7e;
     font-size:26px;
-    font-weight:600;
+    color:#b8466d;
+    text-align:center;
   }
 
-  .photo-box{
-    width:380px;
-    margin:40px auto;
-    padding:12px;
-    border-radius:15px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+  .scene{
+    width:360px;
     background:white;
+    border-radius:25px;
+    padding:25px 15px;
+    text-align:center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.07);
   }
 
-.photo-box img{
-    width:100%;
-    height:auto;
-    object-fit:contain;
-    border-radius:0;  /* o 15px si quieres bonito */
-    display:block;
-    margin:auto;
-}
+  /* Mancuerna color plomo */
+  .dumbbell{
+    width:260px;
+    height:140px;
+    margin:0 auto 8px;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
 
-
-  .text-box{
-    width:300px;
-    margin:20px auto;
-    padding:15px;
-    background:white;
+  .weight{
+    width:80px;
+    height:80px;
     border-radius:15px;
-    min-height:120px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.15);
-    text-align:left;
-    white-space:pre-wrap;
+    background: linear-gradient(180deg, var(--steel-light), var(--steel-dark));
+    box-shadow: inset 0 -6px 10px rgba(0,0,0,0.2), 0 6px 12px rgba(0,0,0,0.12);
   }
 
-  /* Corazones */
-  .heart{
+  .bar{
+    width:100px;
+    height:28px;
+    border-radius:10px;
+    background: linear-gradient(180deg, var(--steel-light), var(--steel-dark));
+    box-shadow: inset 0 -5px 10px rgba(0,0,0,0.2);
+  }
+
+  .plate{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%, -50%);
+    width:220px;
+    display:flex;
+    justify-content:space-between;
+    pointer-events:none;
+  }
+
+  .roller{
+    width:60px;
+    background: white;
+    border-radius:12px;
+    padding:6px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.1);
+    pointer-events:auto;
+    text-align:center;
+  }
+
+  .arrow{
+    cursor:pointer;
+    user-select:none;
+    font-size:18px;
+    color:#d74f84;
+  }
+
+  .val{
+    font-size:20px;
+    font-weight:700;
+    margin:4px 0;
+    color:#b8466d;
+  }
+
+  .roller-label{
+    font-size:11px;
+    color:#6b5060;
+  }
+
+  .hint{
+    margin-top:10px;
+    font-size:13px;
+    color:#7a5a68;
+  }
+
+  /* Success screen */
+  #success{
+    display:none;
     position:fixed;
-    color:#ff7cae;
-    font-size:22px;
-    animation: float 5s linear infinite;
-    opacity:0.7;
+    inset:0;
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(3px);
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
   }
 
-  @keyframes float{
-    0%{ transform:translateY(0); opacity:1; }
-    100%{ transform:translateY(-140vh); opacity:0; }
+  #success h2{
+    font-size:34px;
+    color:#d74f84;
+    margin:0;
+    font-weight:800;
+  }
+
+  #success p{
+    margin:5px;
+    color:#6b4a59;
+    font-size:15px;
+  }
+
+  /* Confetti */
+  .confetti{
+    position:fixed;
+    width:10px;
+    height:14px;
+    top:-20px;
+    animation: fall 2.8s linear forwards;
+  }
+
+  @keyframes fall{
+    to{
+      transform:translateY(120vh) rotateZ(360deg);
+      opacity:0;
+    }
   }
 </style>
 </head>
+
 <body>
 
-<h1>Momentos Contigo 💖</h1>
-<p>Porque cada foto cuenta una historia de nosotros…</p>
+<h1>Ingresa la fecha correcta…</h1>
 
-<!-- ---------- BLOQUE DEL CARRUSEL ---------- -->
-<div class="carousel-block">
-  <div class="carousel-container">
-    <div class="carousel" id="carousel">
+<div class="scene">
+  <div class="dumbbell">
+    <div class="weight"></div>
+    <div class="bar"></div>
+    <div class="weight"></div>
 
-      <div class="carousel-item item1"><img src="foto1.jpeg"></div>
-      <div class="carousel-item item2"><img src="foto2.jpeg"></div>
-      <div class="carousel-item item3"><img src="foto3.jpeg"></div>
-      <div class="carousel-item item4"><img src="foto4.jpeg"></div>
+    <div class="plate">
+      
+      <!-- DD -->
+      <div class="roller" data-type="day">
+        <div class="arrow up">▲</div>
+        <div class="val" id="dayVal">01</div>
+        <div class="arrow down">▼</div>
+        <div class="roller-label">DD</div>
+      </div>
+
+      <!-- MM -->
+      <div class="roller" data-type="month">
+        <div class="arrow up">▲</div>
+        <div class="val" id="monthVal">01</div>
+        <div class="arrow down">▼</div>
+        <div class="roller-label">MM</div>
+      </div>
+
+      <!-- AA -->
+      <div class="roller" data-type="year">
+        <div class="arrow up">▲</div>
+        <div class="val" id="yearVal">25</div>
+        <div class="arrow down">▼</div>
+        <div class="roller-label">AA</div>
+      </div>
 
     </div>
   </div>
+
+  <div class="hint">"No todos se declaran en un lugar romántico… yo elegí el baño porque el amor también necesita privacidad.”</div>
 </div>
 
-<p id="loveMessage" style="
-  font-size:18px;
-  color:#e7357a;
-  margin-top:15px;
-  min-height:25px;
-  font-weight:600;
-"></p>
-
-<h2 class="section-title">Nuestro tiempo juntos 💞</h2>
-<div class="photo-box">
-  <img src="gorila.jpeg">
+<!-- BOTÓN INGRESAR (oculto) -->
+<div style="text-align:center; margin-top:20px;">
+  <button id="btnIngresar" 
+    onclick="goFotos()" 
+    style="display:none; padding:12px 22px; font-size:18px; background:#d74f84; color:white; border:none; border-radius:10px; cursor:pointer;">
+    Ingresar ❤️
+  </button>
 </div>
 
-<h3 style="color:#7a4a63; margin-top:-10px;">Nuestro primer mes ❤️</h3>
-
-<h2 class="section-title">Carta de mi corazón ✍️</h2>
-<div class="text-box">
-Aquí puedes escribir tu carta...  
-Cambia este texto por algo bonito para ella.
+<!-- Success -->
+<div id="success">
+  <h2>¡Perfecto mi amor! 💖</h2>
+  <p>Esa es nuestra fecha</p>
 </div>
+
+<audio id="ding">
+  <source src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" type="audio/ogg">
+</audio>
 
 <script>
-/* Corazones */
-function createHeart(){
-  const h = document.createElement("div");
-  h.classList.add("heart");
-  h.style.left = Math.random()*100+"vw";
-  h.style.bottom = "-20px";
-  h.textContent = "❤";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),5000);
+/* ============================
+CONFIGURACIÓN DE FECHA
+   ============================ */
+const target = { day:31, month:10, year:25 };
+let state = { day:1, month:1, year:25 };
+
+const dayVal   = document.getElementById("dayVal");
+const monthVal = document.getElementById("monthVal");
+const yearVal  = document.getElementById("yearVal");
+const ding = document.getElementById("ding");
+
+/* Crear confetti elegante */
+function confetti(){
+  for(let i=0;i<35;i++){
+    let c = document.createElement("div");
+    c.classList.add("confetti");
+    c.style.left = Math.random()*100+"vw";
+    c.style.background = ["#ff8fb7","#ffd166","#a3d8ff","#98ffb5","#d3a5ff"][i%5];
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),2900);
+  }
 }
-setInterval(createHeart, 700);
 
-/* ---------- CONTROL DEL GIRO ---------- */
-let carousel = document.getElementById("carousel");
-let angle = 0;
-let dragging = false;
-let startX = 0;
+/* FUNCIÓN DE ÉXITO */
+function success(){
+  document.getElementById("success").style.display = "flex";
+  ding.play();
+  confetti();
 
-carousel.addEventListener("touchstart", (e)=>{
-  dragging = true;
-  startX = e.touches[0].clientX;
-
-  /* Detener giro */
-  carousel.style.animation = "none";
-});
-
-carousel.addEventListener("touchmove", (e)=>{
-  if(!dragging) return;
-  let dx = e.touches[0].clientX - startX;
-  angle += dx * 0.6;           /* 🔥 Más rápido al mover el dedo */
-  startX = e.touches[0].clientX;
-  carousel.style.transform = `rotateY(${angle}deg)`;
-});
-
-carousel.addEventListener("touchend", ()=>{
-  dragging = false;
-
-  /* Reiniciar la animación automática */
+  // 🔥 Espera 2.5 segundos y va automáticamente a fotos.html
   setTimeout(()=>{
-    carousel.style.animation = "spin 18s linear infinite";
-  }, 150);
+    window.location.href = "fotos.html";
+  }, 2500);
+}
+
+
+/* REDIRIGIR A FOTOS */
+function goFotos(){
+  window.location.href = "fotos.html";
+}
+
+/* Actualizar UI */
+function update(){
+  dayVal.textContent = String(state.day).padStart(2,"0");
+  monthVal.textContent = String(state.month).padStart(2,"0");
+  yearVal.textContent = String(state.year).padStart(2,"0");
+
+  if(state.day===target.day && state.month===target.month && state.year===target.year){
+    success();
+  }
+}
+
+/* Flechas y scroll */
+document.querySelectorAll(".roller").forEach(r=>{
+  let type = r.dataset.type;
+  
+  r.querySelector(".up").onclick=()=>{
+    state[type]++;
+    if(type==="day" && state.day>31) state.day=1;
+    if(type==="month" && state.month>12) state.month=1;
+    if(type==="year" && state.year>99) state.year=0;
+    update();
+  };
+  
+  r.querySelector(".down").onclick=()=>{
+    state[type]--;
+    if(type==="day" && state.day<1) state.day=31;
+    if(type==="month" && state.month<1) state.month=12;
+    if(type==="year" && state.year<0) state.year=99;
+    update();
+  };
+
+  r.onwheel = (e)=>{
+    e.preventDefault();
+    if(e.deltaY<0) state[type]++; else state[type]--;
+
+    if(type==="day" && state.day>31) state.day=1;
+    if(type==="day" && state.day<1) state.day=31;
+
+    if(type==="month" && state.month>12) state.month=1;
+    if(type==="month" && state.month<1) state.month=12;
+
+    if(type==="year" && state.year>99) state.year=0;
+    if(type==="year" && state.year<0) state.year=99;
+
+    update();
+  };
 });
 
-/* Mensaje romántico */
-const loveMessage = document.getElementById("loveMessage");
-
-document.querySelectorAll(".carousel-item img").forEach(img => {
-  img.addEventListener("touchstart", () => {
-
-    document.querySelectorAll(".carousel-item img")
-      .forEach(i => i.classList.remove("active"));
-
-    img.classList.add("active");
-
-    loveMessage.textContent = "Me encanta esta foto contigo ❤️";
-  });
-});
+update();
 </script>
 
 </body>
